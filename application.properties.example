@@ -1,0 +1,7 @@
+spring.application.name=<NAME>
+spring.mail.host=<SMTP>
+spring.mail.port=<PORT>
+spring.mail.username=<EMAIL>
+spring.mail.password=<APP GENERATED KEY>
+spring.mail.properties.mail.smtp.auth=<BOOL>
+spring.mail.properties.mail.smtp.starttls.enable=<BOOL>

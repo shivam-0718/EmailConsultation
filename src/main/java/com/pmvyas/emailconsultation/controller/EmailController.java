@@ -19,9 +19,10 @@ public class EmailController {
      * Handles POST requests to send consultation emails.
      * Takes form data from client and sends email to consultant.
      */
+
     @PostMapping("/contact")
     public String contact(@RequestBody Form form) {
-        service.sendEmail(form.getName(), "satyam.vyas.04@gmail.com", form.getSubject(), form.getBody());
+        service.sendEmailToClient(form.getName(), form.getEmailId(), form.getSubject(), form.getBody());
         return "Email sent successfully!";
     }
 }

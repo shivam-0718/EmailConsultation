@@ -1,6 +1,6 @@
 package com.pmvyas.emailconsultation.service;
 
-import com.pmvyas.emailconsultation.util.AckNumber;
+import com.pmvyas.emailconsultation.util.AcknowledgementNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,13 +20,14 @@ public class EmailService implements IEmailService {
 
     /**
      * Sends consultation request email from client to consultant.
+     * This will also initiate sending note to consultant informing about new client email.
      * Formats the message with client details and sends via configured SMTP.
      * This will be sent to consultant from Client (when client fills the details)
      */
-    //This email will be sent from consultant to client with some acknowledgement number.
+
     @Override
     public void sendEmailToClient(String clientName, String clientEmailId, String subject, String body) {
-        this.ackNumber = AckNumber.ackNumber;
+        this.ackNumber = AcknowledgementNumber.generateNewAcknowledgementNumber();
 
         SimpleMailMessage message = new SimpleMailMessage();
 
@@ -52,10 +53,10 @@ public class EmailService implements IEmailService {
                """.formatted(clientName, ackNumber));
 
         mailSender.send(message);
+        sendEmailToConsultant(clientName, clientEmailId, body, subject);
     }
 
-    @Override
-    public void sendEmailToConsultant(String consultantName,String subject, String body, String clientEmailId) {
+    private void sendEmailToConsultant(String clientName, String clientEmailId, String body, String subject) {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(this.consultantEmailId);
@@ -64,21 +65,21 @@ public class EmailService implements IEmailService {
         message.setText("""
                 Hello PM Vyas,
                 
-                You have received a new consultation request from %s.
+                You have received a new consultation request from %s. \s
         
                 The details of the consultation are as follows:
         
-                Subject: %s
-                Message: %s
-                Acknowledgement Number: %s
-                Email id: %s
+                Subject: %s \s
+                Message: %s \s
+                Acknowledgement Number: %s \s
+                Email id: %s \s
         
                 Regards,
                 Contact Team
                 PMV
                 +91 12345 67890
 
-                """.formatted(consultantName, subject, body, ackNumber, clientEmailId));
+                """.formatted(clientName, subject, body, ackNumber, clientEmailId));
 
         mailSender.send(message);
     }

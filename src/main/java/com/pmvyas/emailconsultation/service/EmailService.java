@@ -18,15 +18,15 @@ public class EmailService implements IEmailService {
 
     private String ackNumber;
 
-    /**
-     * Sends consultation request email from client to consultant.
-     * This will also initiate sending note to consultant informing about new client email.
-     * Formats the message with client details and sends via configured SMTP.
-     * This will be sent to consultant from Client (when client fills the details)
-     */
-
     @Override
-    public void sendEmailToClient(String clientName, String clientEmailId, String subject, String body) {
+    public String bookConsultation(String clientName, String clientEmailId, String subject, String body) {
+        this.ackNumber = AcknowledgementNumber.generateNewAcknowledgementNumber();
+        sendEmailToClient(clientName, clientEmailId, subject, body);
+        sendEmailToConsultant(clientName, clientEmailId, body, subject);
+        return ackNumber;
+    }
+
+    private void sendEmailToClient(String clientName, String clientEmailId, String subject, String body) {
         this.ackNumber = AcknowledgementNumber.generateNewAcknowledgementNumber();
 
         SimpleMailMessage message = new SimpleMailMessage();

@@ -1,5 +1,5 @@
 package com.pmvyas.emailconsultation.service;
 
 public interface IEmailService {
-    void sendEmailToClient(String clientName, String clientEmailId, String subject, String body);
+    String bookConsultation(String clientName, String clientEmailId, String subject, String body);
 }

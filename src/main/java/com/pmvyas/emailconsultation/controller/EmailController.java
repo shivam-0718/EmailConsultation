@@ -27,12 +27,10 @@ public class EmailController {
 
     @PostMapping("/contact")
     public ResponseEntity<Map<String, String>> contact(@Valid @RequestBody Form form) {
-        String acknowledgementNumber = service.bookConsultation(
-                form.getName(), form.getEmailId(), form.getSubject(), form.getBody());
+        service.bookConsultation(form.getName(), form.getEmailId(), form.getSubject(), form.getBody());
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "Email sent successfully!");
-        response.put("acknowledgement number", acknowledgementNumber);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -19,16 +19,12 @@ public class EmailService implements IEmailService {
     private String ackNumber;
 
     @Override
-    public String bookConsultation(String clientName, String clientEmailId, String subject, String body) {
-        this.ackNumber = AcknowledgementNumber.generateNewAcknowledgementNumber();
+    public void bookConsultation(String clientName, String clientEmailId, String subject, String body) {
         sendEmailToClient(clientName, clientEmailId, subject, body);
         sendEmailToConsultant(clientName, clientEmailId, body, subject);
-        return ackNumber;
     }
 
     private void sendEmailToClient(String clientName, String clientEmailId, String subject, String body) {
-        this.ackNumber = AcknowledgementNumber.generateNewAcknowledgementNumber();
-
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(consultantEmailId);
@@ -40,17 +36,14 @@ public class EmailService implements IEmailService {
                Thank you for reaching out to us.
 
                Your consultation request has been successfully received by our consultant team. \s
-               Your acknowledgement number is: %s.
 
                Our team will connect with you within 2 working days. \s
                Kindly wait for further communication from us.
 
                Regards, \s
                Consultant Team \s
-               PMV \s
-               +91 12345 67890
 
-               """.formatted(clientName, ackNumber));
+               """.formatted(clientName));
 
         mailSender.send(message);
         sendEmailToConsultant(clientName, clientEmailId, body, subject);
@@ -71,7 +64,6 @@ public class EmailService implements IEmailService {
         
                 Subject: %s \s
                 Message: %s \s
-                Acknowledgement Number: %s \s
                 Email id: %s \s
         
                 Regards,
@@ -79,7 +71,7 @@ public class EmailService implements IEmailService {
                 PMV
                 +91 12345 67890
 
-                """.formatted(clientName, subject, body, ackNumber, clientEmailId));
+                """.formatted(clientName, subject, body, clientEmailId));
 
         mailSender.send(message);
     }

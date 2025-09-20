@@ -2,6 +2,7 @@ package com.pmvyas.emailconsultation.util;
 
 import java.util.UUID;
 
+@Deprecated
 public class AcknowledgementNumber {
     /**
      * Generates a new unique acknowledgment number each time it's called
